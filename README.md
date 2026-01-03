@@ -1,4 +1,4 @@
-.
+```
 ├── README.md                        # Project overview, features, setup instructions
 ├── components.json                  # shadcn/ui configuration and component aliases
 ├── eslint.config.js                 # ESLint rules for code quality
@@ -75,3 +75,4 @@
             # - Relationships and indexes
             # - Row Level Security (RLS) policies
             # These migrations allow the database to be reproduced consistently.
+```
