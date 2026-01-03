@@ -1,7 +1,9 @@
-### Project Title  **Gyansathi**
+### Project Title:  **Gyansathi**
+ 
+Gyansathi is a student-driven platform that connects students, learners, and researchers to discuss, collaborate, and support each other through structured peer learning.
+🎯 Our platform aims to become a common platform for students, learners, innovators, and researchers to connect, discuss academic problems, mentor juniors, and create learning-driven opportunities beyond traditional classrooms.
 
-### One-Line Description  
-Gyansathi is a student-driven learning platform that connects students, learners, innovators, and researchers to discuss, collaborate, and support each other through structured peer learning.
+⭐ Use it now: https://gyansathi.lovable.app/
 
 ### Hackathon Context  
 This project was developed as part of **LOCUS Hack A Week 2026**.  
