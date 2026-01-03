@@ -7,8 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { GraduationCap, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
+import peerlearnLogo from '@/assets/peerlearn-logo.png';
 
 const emailSchema = z.string().email('Invalid email address').max(255);
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters').max(128);
@@ -106,7 +107,7 @@ const Auth: React.FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <GraduationCap className="h-12 w-12 text-primary" />
+            <img src={peerlearnLogo} alt="PeerLearn Logo" className="h-20 w-20 rounded-full" />
           </div>
           <CardTitle className="text-2xl">Welcome to PeerLearn</CardTitle>
           <CardDescription>

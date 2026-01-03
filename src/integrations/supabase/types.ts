@@ -47,7 +47,41 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "ai_chats_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      call_signals: {
+        Row: {
+          caller_id: string
+          created_at: string
+          id: string
+          receiver_id: string
+          signal_data: Json | null
+          signal_type: string
+        }
+        Insert: {
+          caller_id: string
+          created_at?: string
+          id?: string
+          receiver_id: string
+          signal_data?: Json | null
+          signal_type: string
+        }
+        Update: {
+          caller_id?: string
+          created_at?: string
+          id?: string
+          receiver_id?: string
+          signal_data?: Json | null
+          signal_type?: string
+        }
+        Relationships: []
       }
       comment_likes: {
         Row: {
@@ -81,6 +115,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -125,6 +166,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       messages: {
@@ -158,13 +206,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "messages_sender_id_fkey"
             columns: ["sender_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean
+          message: string
+          reference_id: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message: string
+          reference_id?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          reference_id?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       posts: {
         Row: {
@@ -203,6 +298,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -266,10 +368,55 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          education_level: string | null
+          email: string | null
+          id: string | null
+          phone_no: string | null
+          points: number | null
+          profile_completed: boolean | null
+          sector: string | null
+          username: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          education_level?: string | null
+          email?: never
+          id?: string | null
+          phone_no?: never
+          points?: number | null
+          profile_completed?: boolean | null
+          sector?: string | null
+          username?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          education_level?: string | null
+          email?: never
+          id?: string | null
+          phone_no?: never
+          points?: number | null
+          profile_completed?: boolean | null
+          sector?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       education_level_order: { Args: { level: string }; Returns: number }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

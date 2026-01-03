@@ -19,7 +19,9 @@ import {
   Mail,
   GraduationCap
 } from 'lucide-react';
-
+import NotificationBell from '@/components/NotificationBell';
+import VideoCall from '@/components/VideoCall';
+import { useWebRTC } from '@/hooks/useWebRTC';
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -28,6 +30,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { user, profile, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const {
+    callState,
+    localVideoRef,
+    remoteVideoRef,
+    acceptCall,
+    rejectCall,
+    endCall,
+    toggleAudio,
+    toggleVideo,
+  } = useWebRTC(user?.id);
 
   const handleSignOut = async () => {
     await signOut();
@@ -43,6 +56,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Video Call Overlay */}
+      <VideoCall
+        isInCall={callState.isInCall}
+        isCalling={callState.isCalling}
+        isReceivingCall={callState.isReceivingCall}
+        callerName={callState.callerName}
+        isAudioEnabled={callState.isAudioEnabled}
+        isVideoEnabled={callState.isVideoEnabled}
+        localVideoRef={localVideoRef}
+        remoteVideoRef={remoteVideoRef}
+        onAcceptCall={acceptCall}
+        onRejectCall={rejectCall}
+        onEndCall={endCall}
+        onToggleAudio={toggleAudio}
+        onToggleVideo={toggleVideo}
+      />
+
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-sm">
         <div className="container mx-auto px-4">
@@ -75,36 +105,39 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </div>
             )}
 
-            {/* Profile Dropdown */}
+            {/* Right side: Notifications + Profile */}
             {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-2">
-                    <User className="h-4 w-4" />
-                    <span className="hidden sm:inline">{profile?.username || 'Profile'}</span>
-                    {profile?.points !== undefined && (
-                      <span className="rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">
-                        {profile.points} pts
-                      </span>
-                    )}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => navigate('/profile')}>
-                    <User className="mr-2 h-4 w-4" />
-                    View Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/messages')}>
-                    <Mail className="mr-2 h-4 w-4" />
-                    Messages
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="flex items-center gap-2">
+                <NotificationBell />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <User className="h-4 w-4" />
+                      <span className="hidden sm:inline">{profile?.username || 'Profile'}</span>
+                      {profile?.points !== undefined && (
+                        <span className="rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">
+                          {profile.points} pts
+                        </span>
+                      )}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem onClick={() => navigate('/profile')}>
+                      <User className="mr-2 h-4 w-4" />
+                      View Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/messages')}>
+                      <Mail className="mr-2 h-4 w-4" />
+                      Messages
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             ) : (
               <Link to="/auth">
                 <Button>Sign In</Button>

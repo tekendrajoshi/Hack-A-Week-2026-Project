@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
-import { Send, ArrowLeft, User, Loader2, MessageSquare } from 'lucide-react';
+import { Send, ArrowLeft, User, Loader2, MessageSquare, Phone, Video } from 'lucide-react';
+import { useWebRTC } from '@/hooks/useWebRTC';
 
 interface Conversation {
   id: string;
@@ -37,6 +38,7 @@ const Messages: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { startCall, callState } = useWebRTC(user?.id);
 
   useEffect(() => {
     const toId = searchParams.get('to');
@@ -126,7 +128,7 @@ const Messages: React.FC = () => {
     }
 
     const { data: profiles } = await supabase
-      .from('profiles')
+      .from('public_profiles')
       .select('id, username')
       .in('id', partnerIds);
 
@@ -263,23 +265,45 @@ const Messages: React.FC = () => {
           {/* Chat Area */}
           {selectedUser ? (
             <Card className="flex-1 flex flex-col">
-              <div className="p-4 border-b border-border flex items-center gap-3">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="md:hidden"
-                  onClick={() => {
-                    setSelectedUser(null);
-                    navigate('/messages');
-                  }}
-                >
-                  <ArrowLeft className="h-5 w-5" />
-                </Button>
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User className="h-5 w-5 text-primary" />
+              <div className="p-4 border-b border-border flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="md:hidden"
+                    onClick={() => {
+                      setSelectedUser(null);
+                      navigate('/messages');
+                    }}
+                  >
+                    <ArrowLeft className="h-5 w-5" />
+                  </Button>
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <User className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-semibold">{selectedUser.username}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold">{selectedUser.username}</p>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => startCall(selectedUser.id, false)}
+                    disabled={callState.isInCall || callState.isCalling}
+                    title="Audio call"
+                  >
+                    <Phone className="h-5 w-5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => startCall(selectedUser.id, true)}
+                    disabled={callState.isInCall || callState.isCalling}
+                    title="Video call"
+                  >
+                    <Video className="h-5 w-5" />
+                  </Button>
                 </div>
               </div>
 

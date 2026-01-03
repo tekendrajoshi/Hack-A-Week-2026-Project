@@ -53,23 +53,42 @@ const HelpJuniors: React.FC = () => {
       return;
     }
 
-    const { data, error } = await supabase
+    // Fetch posts
+    const { data: postsData, error: postsError } = await supabase
       .from('posts')
-      .select(`
-        *,
-        profiles:user_id (
-          username,
-          education_level
-        )
-      `)
+      .select('*')
       .in('level_tag', juniorLevels)
       .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error('Error fetching posts:', error);
-    } else {
-      setPosts(data as Post[]);
+    if (postsError) {
+      console.error('Error fetching posts:', postsError);
+      setLoading(false);
+      return;
     }
+
+    if (!postsData || postsData.length === 0) {
+      setPosts([]);
+      setLoading(false);
+      return;
+    }
+
+    // Get unique user IDs
+    const userIds = [...new Set(postsData.map(p => p.user_id))];
+
+    // Fetch author profiles from public_profiles view
+    const { data: profilesData } = await supabase
+      .from('public_profiles')
+      .select('id, username, education_level')
+      .in('id', userIds);
+
+    // Map profiles to posts
+    const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
+    const postsWithProfiles = postsData.map(post => ({
+      ...post,
+      profiles: profilesMap.get(post.user_id) || { username: 'Unknown', education_level: null }
+    }));
+
+    setPosts(postsWithProfiles as Post[]);
     setLoading(false);
   };
 

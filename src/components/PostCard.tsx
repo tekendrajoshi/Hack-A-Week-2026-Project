@@ -66,12 +66,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onUpdate, show
     
     setIsLoadingComments(true);
     
+    // Fetch comments without profiles relation
     const { data: commentsData, error: commentsError } = await supabase
       .from('comments')
-      .select(`
-        *,
-        profiles:user_id (username)
-      `)
+      .select('*')
       .eq('post_id', post.id)
       .order('created_at', { ascending: true });
 
@@ -81,8 +79,26 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onUpdate, show
       return;
     }
 
+    if (!commentsData || commentsData.length === 0) {
+      setComments([]);
+      setIsLoadingComments(false);
+      return;
+    }
+
+    // Get unique user IDs from comments
+    const userIds = [...new Set(commentsData.map(c => c.user_id))];
+
+    // Fetch author profiles from public_profiles view
+    const { data: profilesData } = await supabase
+      .from('public_profiles')
+      .select('id, username')
+      .in('id', userIds);
+
+    const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
+
     // Check which comments the current user has liked
-    if (currentUserId && commentsData) {
+    let likedIds = new Set<string>();
+    if (currentUserId) {
       const commentIds = commentsData.map(c => c.id);
       const { data: likesData } = await supabase
         .from('comment_likes')
@@ -90,16 +106,16 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onUpdate, show
         .eq('user_id', currentUserId)
         .in('comment_id', commentIds);
 
-      const likedIds = new Set(likesData?.map(l => l.comment_id));
-      const commentsWithLikes = commentsData.map(c => ({
-        ...c,
-        hasLiked: likedIds.has(c.id)
-      }));
-      setComments(commentsWithLikes as Comment[]);
-    } else {
-      setComments(commentsData as Comment[]);
+      likedIds = new Set(likesData?.map(l => l.comment_id));
     }
-    
+
+    const commentsWithProfiles = commentsData.map(c => ({
+      ...c,
+      profiles: profilesMap.get(c.user_id) || { username: 'Unknown' },
+      hasLiked: likedIds.has(c.id)
+    }));
+
+    setComments(commentsWithProfiles as Comment[]);
     setIsLoadingComments(false);
   };
 

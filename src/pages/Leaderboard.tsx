@@ -24,7 +24,7 @@ const Leaderboard: React.FC = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       const { data, error } = await supabase
-        .from('profiles')
+        .from('public_profiles')
         .select('id, username, education_level, points')
         .order('points', { ascending: false })
         .limit(50);
