@@ -1,3 +1,13 @@
+### Project Title  **Gyansathi**
+
+### One-Line Description  
+Gyansathi is a student-driven learning platform that connects students, learners, innovators, and researchers to discuss, collaborate, and support each other through structured peer learning.
+
+### Hackathon Context  
+This project was developed as part of **LOCUS Hack A Week 2026**.  
+**Team Name:** Tensor
+---
+
 ## 🧠 Problem Summary
 
 - **Information vs. Interaction Gap:** There is no lack of learning resources, but what students truly lack is discussion and interaction. When confusion arises, students often do not know whom to ask, and their friend circle may not always be available to help.
@@ -56,8 +66,17 @@
 - Tracks contribution points and activity
 
 ---
-
-## 🧩 System Architecture (High Level)
+## 🔄 Application Flow
+1. User signs up and completes their academic profile
+2. User accesses level-based questions
+3. User asks or answers questions
+4. Helpful answers receive likes
+5. Likes increase user points
+6. Users appear on the public leaderboard
+7. Users can message or call each other for deeper discussion
+8. AI Tutor provides additional academic assistance when needed
+---
+## 🧩 System Architecture
 
 - **Frontend**: React + TypeScript for a modular and scalable UI
 - **Backend**: Supabase for authentication, database, and real-time features
@@ -65,6 +84,59 @@
 - **Realtime**: Messaging, notifications, and call signaling
 - **AI**: Edge Function used for AI tutoring
 - **Calls**: WebRTC for peer-to-peer audio/video communication
+
+---
+## 🟢 Database Overview
+
+Gyansathi uses a structured relational database designed for scalability, security, and real-time interaction.
+
+### Core Tables
+- **profiles** – Stores user information such as name, education level, and contribution points  
+- **posts** – Contains academic questions posted by users  
+- **comments** – Stores answers and discussions related to questions  
+- **likes** – Tracks likes on answers to calculate contribution points  
+- **messages** – Handles private one-to-one conversations between users  
+- **notifications** – Stores system alerts and activity updates  
+
+---
+
+## 🛠️ Running the Project Locally
+
+#### Prerequisites
+- **Node.js** and **npm** installed  
+  (Recommended: install via `nvm`) Install nvm from: https://github.com/nvm-sh/nvm#installing-and-updating
+#### Steps
+
+```bash
+# Step 1: Clone the repository
+git clone <YOUR_GIT_URL>
+# Step 2: Navigate to the project directory
+cd <YOUR_PROJECT_NAME>
+# Step 3: Install dependencies
+npm install
+# Step 4: Start the development server (with auto-reloading)
+npm run dev
+```
+---
+## 🟢 Future Improvements
+
+Planned enhancements beyond the current MVP include:
+- Shared whiteboard during audio/video calls(making learning effective and easier)
+- Screen sharing for interactive learning
+- Tutor discovery and booking system
+- Advanced moderation and content reporting
+- Improved AI tutor contextual understanding
+- Mobile-first performance and UX improvements
+
+---
+
+## 🟢 Team / Author Information
+
+**Team Name:** Tensor  
+**Team Members:**
+- **Tekendra Joshi**
+- **Pragyan Neupane**
+Computer Engineering, IOE Pulchowk Campus
 
 ---
 ### 🔍 Quick Navigation Guide
@@ -159,22 +231,4 @@ This section highlights where to find each major feature in the codebase.
     ├── functions/
     │   └── ai-tutor/index.ts # Edge function for AI tutoring responses
     └── migrations/                   # Database schema & security
-```
-
-## 🛠️ Running the Project Locally
-
-#### Prerequisites
-- **Node.js** and **npm** installed  
-  (Recommended: install via `nvm`) Install nvm from: https://github.com/nvm-sh/nvm#installing-and-updating
-#### Steps
-
-```bash
-# Step 1: Clone the repository
-git clone <YOUR_GIT_URL>
-# Step 2: Navigate to the project directory
-cd <YOUR_PROJECT_NAME>
-# Step 3: Install dependencies
-npm install
-# Step 4: Start the development server (with auto-reloading)
-npm run dev
 ```
