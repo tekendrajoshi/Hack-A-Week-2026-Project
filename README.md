@@ -1,10 +1,32 @@
+## 🧠 Problem Summary
+
+- **Information vs. Interaction Gap:** There is no lack of learning resources, but what students truly lack is discussion and interaction. When confusion arises, students often do not know whom to ask, and their friend circle may not always be available to help.
+- **Limited Senior–Junior Mentorship:** The traditional senior–junior mentoring culture exists only locally within campuses and institutions, not at a national or broader level.
+- **High Cost of Home Tuition:** Not every student can afford costly home tutoring services. At the same time, many students do not need full-time tuition—often they only need guidance or doubt clearing.
+- **Lack of a Dedicated Student Community:** Students currently rely on platforms like Facebook or Telegram for academic discussions. These platforms are designed for entertainment, not learning, leading to distractions such as reels, memes, and notifications. Additionally, discussions are unstructured and mixed across different academic levels.
+---
+
+## 💡 Solution: What Our Platform Provides
+
+- **Level-Based Peer Q&A Community:** Our platform connects students with peers of similar academic levels as well as with seniors. By simply creating an account and setting academic information, users become part of a focused learning community. This reduces distractions and promotes a healthy learning culture.
+- **Digital Senior–Junior Mentorship:** Our platform digitalizes the traditional senior–junior mentoring culture found locally in campuses like Pulchowk and expands it into a broader, nationwide community.
+
+- **Peer-to-Peer Tutoring and Discussion Model:** Students can help each other through discussions, explanations, and mentoring without the pressure of formal tuition.
+
+- **Points and Leaderboard System:** Users earn points based on the number of likes received on their answers. Higher points indicate better contributors and potential tutors. This system motivates students to help others and also enables parents to identify good tutors, creating earning opportunities for students.
+
+- **Direct Communication for Deeper Learning:** For detailed discussions, our platform enables: 
+  - One-to-one messaging  
+  - Audio and video calls  
+  - Shared whiteboard and screen sharing(in Future)
+
+- **AI Tutor as Support, Not Replacement:** An AI Tutor assists students when human help is unavailable, supporting learning without replacing peer interaction.
 
 ---
-## 🔍 Quick Navigation Guide (For Judges & Visitors)
-
+### 🔍 Quick Navigation Guide
 This section highlights where to find each major feature in the codebase.
 
-### 📌 Core Application Pages
+#### 📌 Core Application Pages
 - **Main Q&A Board (same-level students)**  `src/pages/Questions.tsx`
 - **Help Juniors Section**  `src/pages/HelpJuniors.tsx`
 - **Contribution Leaderboard**  `src/pages/Leaderboard.tsx`
@@ -13,99 +35,40 @@ This section highlights where to find each major feature in the codebase.
 - **Authentication (Login / Signup)**  `src/pages/Auth.tsx`
 - **Profile Completion Flow**  `src/pages/CompleteProfile.tsx`
 - **AI Tutor Interface**   `src/pages/AITutor.tsx`
+- **AI Tutor (Backend)**  `supabase/functions/ai-tutor/index.ts`
+- **Reusable UI Components**  `src/components/ui/`
 
----
-
-### 🧠 Application Flow & Layout
+#### 🧠 Application Flow & Layout
 - **App Routing & Global Providers**  `src/App.tsx`
-- **Main Layout (Navbar, Navigation, Notifications, Call Overlay)** `src/components/Layout.tsx`
-- **404 / Not Found Page**  `src/pages/NotFound.tsx`
+- **Main Layout (Navbar, Navigation, Notifications, Call Overlay)**`src/components/Layout.tsx`
+
+#### 💬 Q&A and Interaction
+- **Question Creation Modal**  `src/components/CreatePostDialog.tsx`
+- **Question & Answer Display (likes, comments)**  `src/components/PostCard.tsx`
+- **Points & Ranking Logic**  `src/pages/Leaderboard.tsx`
+
+#### 📞 Messaging & Real-Time Communication
+- **Messaging UI**  `src/pages/Messages.tsx`
+- **WebRTC Call Logic (Audio/Video)**  `src/hooks/useWebRTC.ts`
+- **Call UI Overlay**  `src/components/VideoCall.tsx`
+
+#### 🔔 Notifications & User Feedback
+- **Realtime Notifications Dropdown**  `src/components/NotificationBell.tsx`
+- **Toast Notifications**  `src/hooks/use-toast.ts`
+
+#### 🔐 Authentication & User Management
+- **Auth State & Profile Management**  `src/contexts/AuthContext.tsx`
+- **Supabase Client Setup**  `src/integrations/supabase/client.ts`
+- **Database Type Definitions**  `src/integrations/supabase/types.ts`
+
+#### 🗄️ Database Schema & Security
+- **Database Migrations & Policies**  `supabase/migrations/`  
+  (Defines tables: profiles, posts, comments, likes, messages, notifications and Row Level Security (RLS) policies)
 
 ---
-
-### 💬 Q&A and Interaction
-- **Question Creation Modal**  
-  `src/components/CreatePostDialog.tsx`
-- **Question & Answer Display (likes, comments)**  
-  `src/components/PostCard.tsx`
-- **Points & Ranking Logic**  
-  `src/pages/Leaderboard.tsx`
-
----
-
-### 📞 Messaging & Real-Time Communication
-- **Messaging UI**  
-  `src/pages/Messages.tsx`
-- **WebRTC Call Logic (Audio/Video)**  
-  `src/hooks/useWebRTC.ts`
-- **Call UI Overlay**  
-  `src/components/VideoCall.tsx`
-
----
-
-### 🔔 Notifications & User Feedback
-- **Realtime Notifications Dropdown**  
-  `src/components/NotificationBell.tsx`
-- **Toast Notifications**  
-  `src/hooks/use-toast.ts`
-
----
-
-### 🔐 Authentication & User Management
-- **Auth State & Profile Management**  
-  `src/contexts/AuthContext.tsx`
-- **Supabase Client Setup**  
-  `src/integrations/supabase/client.ts`
-- **Database Type Definitions**  
-  `src/integrations/supabase/types.ts`
-
----
-
-### 🤖 AI Tutor (Backend)
-- **AI Edge Function**  
-  `supabase/functions/ai-tutor/index.ts`
-
----
-
-### 🗄️ Database Schema & Security
-- **Database Migrations & Policies**  
-  `supabase/migrations/`  
-  (Defines tables: profiles, posts, comments, likes, messages, notifications  
-  and Row Level Security (RLS) policies)
-
----
-
-### 🎨 UI & Design System
-- **Reusable UI Components**  
-  `src/components/ui/`
-- **Global Styles & Theme**  
-  `src/index.css`, `tailwind.config.ts`
-
----
-
-### 🛠️ Configuration & Tooling
-- **Build & Dev Configuration**  
-  `vite.config.ts`
-- **Linting Rules**  
-  `eslint.config.js`
-- **TypeScript Configuration**  
-  `tsconfig*.json`
-
----
-
-### ✅ Recommended Review Order
-1. `README.md`
-2. `src/pages/Questions.tsx`
-3. `src/pages/HelpJuniors.tsx`
-4. `src/pages/Leaderboard.tsx`
-5. `src/pages/Messages.tsx` + `src/hooks/useWebRTC.ts`
-6. `supabase/migrations/`
-7. `supabase/functions/ai-tutor/index.ts`
-
----
-## Complete File Structure
+## Complete Project Structure
 ```
-├── README.md                        # Project overview, features, setup instructions
+├── README.md          
 ├── components.json                  # shadcn/ui configuration and component aliases
 ├── eslint.config.js                 # ESLint rules for code quality
 ├── index.html                       # HTML entry point (root div, meta tags)
@@ -116,9 +79,6 @@ This section highlights where to find each major feature in the codebase.
 ├── tsconfig.json                    # Base TypeScript configuration
 ├── tsconfig.node.json               # TypeScript config for Vite/Node files
 ├── vite.config.ts                   # Vite configuration (build, dev server, aliases)
-├── public/
-│   ├── robots.txt                   # Search engine crawling rules
-│   └── favicon.ico                  # App icon shown in browser tab
 │
 ├── src/                             # Frontend source code
 │   ├── App.tsx                      # Root React component (providers + routing)
@@ -137,9 +97,7 @@ This section highlights where to find each major feature in the codebase.
 │   │   ├── NavLink.tsx              # Styled navigation link helper
 │   │   ├── VideoCall.tsx            # Audio/video call UI (WebRTC)
 │   │   └── ui/                      # shadcn/ui primitives
-│   │       └── (Button, Card, Dialog, Input, Select, Toast, Table, Tooltip, etc.)
-│   │          # This folder contains low-level reusable UI building blocks.
-│   │          # It is intentionally grouped to avoid cluttering the main structure.
+│   │       └── (Button, Card, Dialog, Input, Select, Toast, Table, Tooltip, etc.) # This folder contains low-level reusable UI building blocks.
 │   │
 │   ├── contexts/
 │   │   └── AuthContext.tsx           # Authentication context (Supabase auth + user profile)
@@ -172,13 +130,6 @@ This section highlights where to find each major feature in the codebase.
 └── supabase/                         # Backend configuration (Supabase)
     ├── config.toml                   # Supabase project configuration
     ├── functions/
-    │   └── ai-tutor/
-    │       └── index.ts              # Edge function for AI tutoring responses
-    └── migrations/                   # Database schema & security definitions
-        └── (SQL migration files)
-            # This folder contains timestamped SQL files that define:
-            # - Tables: profiles, posts, comments, likes, messages, notifications
-            # - Relationships and indexes
-            # - Row Level Security (RLS) policies
-            # These migrations allow the database to be reproduced consistently.
+    │   └── ai-tutor/index.ts # Edge function for AI tutoring responses
+    └── migrations/                   # Database schema & security
 ```
