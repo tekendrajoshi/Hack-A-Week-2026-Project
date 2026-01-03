@@ -10,17 +10,61 @@
 
 - **Level-Based Peer Q&A Community:** Our platform connects students with peers of similar academic levels as well as with seniors. By simply creating an account and setting academic information, users become part of a focused learning community. This reduces distractions and promotes a healthy learning culture.
 - **Digital Senior–Junior Mentorship:** Our platform digitalizes the traditional senior–junior mentoring culture found locally in campuses like Pulchowk and expands it into a broader, nationwide community.
-
 - **Peer-to-Peer Tutoring and Discussion Model:** Students can help each other through discussions, explanations, and mentoring without the pressure of formal tuition.
-
 - **Points and Leaderboard System:** Users earn points based on the number of likes received on their answers. Higher points indicate better contributors and potential tutors. This system motivates students to help others and also enables parents to identify good tutors, creating earning opportunities for students.
-
 - **Direct Communication for Deeper Learning:** For detailed discussions, our platform enables: 
   - One-to-one messaging  
   - Audio and video calls  
   - Shared whiteboard and screen sharing(in Future)
-
 - **AI Tutor as Support, Not Replacement:** An AI Tutor assists students when human help is unavailable, supporting learning without replacing peer interaction.
+
+---
+## ✨ Key Features
+
+### 📘 Level-Based Q&A
+- Students view and post questions relevant to their education level
+- Anyone can answer questions, similar to comment-based discussions
+- Answers can be liked to reward helpful contributors
+
+### 🎓 Help Juniors Section
+- Senior students can view and answer questions posted by juniors
+- Encourages mentorship and academic guidance across levels
+
+### 🏆 Contribution Leaderboard
+- Users earn points based on likes received on answers
+- Public leaderboard ranks contributors
+- Acts as motivation and credibility for potential tutoring opportunities
+
+### 💬 Messaging & Communication
+- Direct one-to-one messaging between users
+- Enables discussion beyond public comments
+- Designed to support academic collaboration
+
+### 📞 Audio / Video Calls (WebRTC)
+- Users can initiate real-time audio/video calls
+- Call UI integrated directly into the platform
+- Lays foundation for future whiteboard and screen-sharing features
+
+### 🤖 AI Tutor
+- AI-powered tutor assists students with academic questions
+- Implemented using a backend edge function
+- Considers user context such as education level and field of study
+
+### 👤 User Profiles
+- Each user has a profile with academic details
+- Profile completion required for full access
+- Tracks contribution points and activity
+
+---
+
+## 🧩 System Architecture (High Level)
+
+- **Frontend**: React + TypeScript for a modular and scalable UI
+- **Backend**: Supabase for authentication, database, and real-time features
+- **Database**: Relational schema with row-level security
+- **Realtime**: Messaging, notifications, and call signaling
+- **AI**: Edge Function used for AI tutoring
+- **Calls**: WebRTC for peer-to-peer audio/video communication
 
 ---
 ### 🔍 Quick Navigation Guide
@@ -35,35 +79,18 @@ This section highlights where to find each major feature in the codebase.
 - **Authentication (Login / Signup)**  `src/pages/Auth.tsx`
 - **Profile Completion Flow**  `src/pages/CompleteProfile.tsx`
 - **AI Tutor Interface**   `src/pages/AITutor.tsx`
-- **AI Tutor (Backend)**  `supabase/functions/ai-tutor/index.ts`
 - **Reusable UI Components**  `src/components/ui/`
-
-#### 🧠 Application Flow & Layout
 - **App Routing & Global Providers**  `src/App.tsx`
 - **Main Layout (Navbar, Navigation, Notifications, Call Overlay)**`src/components/Layout.tsx`
-
-#### 💬 Q&A and Interaction
 - **Question Creation Modal**  `src/components/CreatePostDialog.tsx`
 - **Question & Answer Display (likes, comments)**  `src/components/PostCard.tsx`
 - **Points & Ranking Logic**  `src/pages/Leaderboard.tsx`
-
-#### 📞 Messaging & Real-Time Communication
-- **Messaging UI**  `src/pages/Messages.tsx`
 - **WebRTC Call Logic (Audio/Video)**  `src/hooks/useWebRTC.ts`
-- **Call UI Overlay**  `src/components/VideoCall.tsx`
-
-#### 🔔 Notifications & User Feedback
 - **Realtime Notifications Dropdown**  `src/components/NotificationBell.tsx`
-- **Toast Notifications**  `src/hooks/use-toast.ts`
-
-#### 🔐 Authentication & User Management
 - **Auth State & Profile Management**  `src/contexts/AuthContext.tsx`
 - **Supabase Client Setup**  `src/integrations/supabase/client.ts`
 - **Database Type Definitions**  `src/integrations/supabase/types.ts`
-
-#### 🗄️ Database Schema & Security
-- **Database Migrations & Policies**  `supabase/migrations/`  
-  (Defines tables: profiles, posts, comments, likes, messages, notifications and Row Level Security (RLS) policies)
+- **Database Migrations & Policies**  `supabase/migrations/` (Defines tables: profiles, posts, comments, likes, messages, notifications and Row Level Security (RLS) policies)
 
 ---
 ## Complete Project Structure
@@ -132,4 +159,22 @@ This section highlights where to find each major feature in the codebase.
     ├── functions/
     │   └── ai-tutor/index.ts # Edge function for AI tutoring responses
     └── migrations/                   # Database schema & security
+```
+
+## 🛠️ Running the Project Locally
+
+#### Prerequisites
+- **Node.js** and **npm** installed  
+  (Recommended: install via `nvm`) Install nvm from: https://github.com/nvm-sh/nvm#installing-and-updating
+#### Steps
+
+```bash
+# Step 1: Clone the repository
+git clone <YOUR_GIT_URL>
+# Step 2: Navigate to the project directory
+cd <YOUR_PROJECT_NAME>
+# Step 3: Install dependencies
+npm install
+# Step 4: Start the development server (with auto-reloading)
+npm run dev
 ```
