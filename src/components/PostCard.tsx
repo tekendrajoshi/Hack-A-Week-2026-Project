@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
+import FileUpload from '@/components/FileUpload';
 import { 
   MessageCircle, 
   ThumbsUp, 
@@ -17,7 +18,9 @@ import {
   Loader2,
   Trash2,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  FileIcon,
+  Download
 } from 'lucide-react';
 
 interface Comment {
@@ -26,6 +29,7 @@ interface Comment {
   content: string;
   likes_count: number;
   created_at: string;
+  file_url: string | null;
   profiles: {
     username: string;
   };
@@ -56,6 +60,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onUpdate, show
   const [comments, setComments] = useState<Comment[]>([]);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const [commentFile, setCommentFile] = useState<{ url: string; name: string } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const { toast } = useToast();
@@ -126,13 +131,14 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onUpdate, show
   }, [showComments, post.id, currentUserId]);
 
   const handleSubmitComment = async () => {
-    if (!newComment.trim() || !currentUserId) return;
+    if ((!newComment.trim() && !commentFile) || !currentUserId) return;
 
     setIsSubmitting(true);
     const { error } = await supabase.from('comments').insert({
       post_id: post.id,
       user_id: currentUserId,
-      content: newComment.trim(),
+      content: newComment.trim() || (commentFile ? 'Shared a file' : ''),
+      file_url: commentFile?.url || null,
     });
 
     if (error) {
@@ -143,6 +149,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onUpdate, show
       });
     } else {
       setNewComment('');
+      setCommentFile(null);
       loadComments();
     }
     setIsSubmitting(false);
@@ -294,6 +301,18 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onUpdate, show
                         </span>
                       </div>
                       <p className="text-sm mt-1">{comment.content}</p>
+                      {comment.file_url && (
+                        <a
+                          href={comment.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 mt-2 p-2 bg-muted rounded-md text-sm hover:bg-muted/80 transition-colors"
+                        >
+                          <FileIcon className="h-4 w-4 text-muted-foreground" />
+                          <span className="truncate flex-1">Attached file</span>
+                          <Download className="h-4 w-4" />
+                        </a>
+                      )}
                       <div className="flex items-center gap-2 mt-2">
                         <Button
                           variant="ghost"
@@ -320,25 +339,48 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onUpdate, show
                 ))}
 
                 {currentUserId && (
-                  <div className="flex gap-2">
-                    <Textarea
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      placeholder="Write a comment..."
-                      rows={2}
-                      className="resize-none"
-                    />
-                    <Button
-                      onClick={handleSubmitComment}
-                      disabled={isSubmitting || !newComment.trim()}
-                      size="icon"
-                    >
-                      {isSubmitting ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Send className="h-4 w-4" />
-                      )}
-                    </Button>
+                  <div className="space-y-2">
+                    {commentFile && (
+                      <div className="flex items-center gap-2 p-2 bg-muted rounded-md">
+                        <FileIcon className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm truncate flex-1">{commentFile.name}</span>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6"
+                          onClick={() => setCommentFile(null)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <Textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Write a comment..."
+                        rows={2}
+                        className="resize-none"
+                      />
+                      <div className="flex flex-col gap-1">
+                        <FileUpload
+                          userId={currentUserId}
+                          onFileUploaded={(url, name) => setCommentFile({ url, name })}
+                          compact
+                        />
+                        <Button
+                          onClick={handleSubmitComment}
+                          disabled={isSubmitting || (!newComment.trim() && !commentFile)}
+                          size="icon"
+                        >
+                          {isSubmitting ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Send className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 )}
               </>

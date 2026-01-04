@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
-import { Send, ArrowLeft, User, Loader2, MessageSquare, Phone, Video } from 'lucide-react';
+import FileUpload from '@/components/FileUpload';
+import { Send, ArrowLeft, User, Loader2, MessageSquare, Phone, Video, FileIcon, Download, X } from 'lucide-react';
 import { useWebRTC } from '@/hooks/useWebRTC';
 
 interface Conversation {
@@ -23,6 +24,7 @@ interface Message {
   sender_id: string;
   receiver_id: string;
   message_text: string;
+  file_url: string | null;
   created_at: string;
 }
 
@@ -32,6 +34,7 @@ const Messages: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedUser, setSelectedUser] = useState<{ id: string; username: string } | null>(null);
   const [newMessage, setNewMessage] = useState('');
+  const [messageFile, setMessageFile] = useState<{ url: string; name: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -166,13 +169,14 @@ const Messages: React.FC = () => {
   };
 
   const sendMessage = async () => {
-    if (!newMessage.trim() || !selectedUser || !user) return;
+    if ((!newMessage.trim() && !messageFile) || !selectedUser || !user) return;
 
     setSending(true);
     const { error } = await supabase.from('messages').insert({
       sender_id: user.id,
       receiver_id: selectedUser.id,
-      message_text: newMessage.trim(),
+      message_text: newMessage.trim() || (messageFile ? 'Sent a file' : ''),
+      file_url: messageFile?.url || null,
     });
 
     if (error) {
@@ -183,6 +187,7 @@ const Messages: React.FC = () => {
       });
     } else {
       setNewMessage('');
+      setMessageFile(null);
     }
     setSending(false);
   };
@@ -329,6 +334,20 @@ const Messages: React.FC = () => {
                             }`}
                           >
                             <p>{msg.message_text}</p>
+                            {msg.file_url && (
+                              <a
+                                href={msg.file_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`flex items-center gap-2 mt-2 p-2 rounded-md text-sm ${
+                                  isMine ? 'bg-primary-foreground/20' : 'bg-background/50'
+                                } hover:opacity-80 transition-opacity`}
+                              >
+                                <FileIcon className="h-4 w-4" />
+                                <span className="truncate flex-1">Attached file</span>
+                                <Download className="h-4 w-4" />
+                              </a>
+                            )}
                             <p
                               className={`text-xs mt-1 ${
                                 isMine ? 'text-primary-foreground/70' : 'text-muted-foreground'
@@ -344,16 +363,36 @@ const Messages: React.FC = () => {
                 )}
               </ScrollArea>
 
-              <div className="p-4 border-t border-border">
+              <div className="p-4 border-t border-border space-y-2">
+                {messageFile && (
+                  <div className="flex items-center gap-2 p-2 bg-muted rounded-md">
+                    <FileIcon className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm truncate flex-1">{messageFile.name}</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6"
+                      onClick={() => setMessageFile(null)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
                 <div className="flex gap-2">
+                  <FileUpload
+                    userId={user?.id || ''}
+                    onFileUploaded={(url, name) => setMessageFile({ url, name })}
+                    compact
+                  />
                   <Input
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Type a message..."
                     disabled={sending}
+                    className="flex-1"
                   />
-                  <Button onClick={sendMessage} disabled={sending || !newMessage.trim()}>
+                  <Button onClick={sendMessage} disabled={sending || (!newMessage.trim() && !messageFile)}>
                     {sending ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (

@@ -13,6 +13,7 @@ import AITutor from "./pages/AITutor";
 import Leaderboard from "./pages/Leaderboard";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
+import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/resources" element={<Resources />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

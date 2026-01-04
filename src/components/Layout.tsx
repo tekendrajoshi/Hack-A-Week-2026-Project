@@ -17,7 +17,8 @@ import {
   User, 
   LogOut,
   Mail,
-  GraduationCap
+  GraduationCap,
+  FolderOpen
 } from 'lucide-react';
 import NotificationBell from '@/components/NotificationBell';
 import VideoCall from '@/components/VideoCall';
@@ -50,6 +51,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navItems = [
     { path: '/questions', label: 'Questions', icon: HelpCircle },
     { path: '/help-juniors', label: 'Help Juniors', icon: Users },
+    { path: '/resources', label: 'Resources', icon: FolderOpen },
     { path: '/ai-tutor', label: 'Talk to AI', icon: MessageSquare },
     { path: '/leaderboard', label: 'Leaderboard', icon: Trophy },
   ];

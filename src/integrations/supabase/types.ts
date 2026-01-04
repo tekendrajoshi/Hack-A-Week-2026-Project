@@ -130,6 +130,7 @@ export type Database = {
         Row: {
           content: string
           created_at: string | null
+          file_url: string | null
           id: string
           likes_count: number | null
           post_id: string
@@ -138,6 +139,7 @@ export type Database = {
         Insert: {
           content: string
           created_at?: string | null
+          file_url?: string | null
           id?: string
           likes_count?: number | null
           post_id: string
@@ -146,6 +148,7 @@ export type Database = {
         Update: {
           content?: string
           created_at?: string | null
+          file_url?: string | null
           id?: string
           likes_count?: number | null
           post_id?: string
@@ -178,6 +181,7 @@ export type Database = {
       messages: {
         Row: {
           created_at: string | null
+          file_url: string | null
           id: string
           message_text: string
           receiver_id: string
@@ -185,6 +189,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          file_url?: string | null
           id?: string
           message_text: string
           receiver_id: string
@@ -192,6 +197,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          file_url?: string | null
           id?: string
           message_text?: string
           receiver_id?: string
@@ -345,6 +351,42 @@ export type Database = {
           profile_completed?: boolean | null
           sector?: string | null
           username?: string
+        }
+        Relationships: []
+      }
+      resources: {
+        Row: {
+          created_at: string
+          description: string | null
+          education_level: string
+          file_name: string
+          file_type: string | null
+          file_url: string
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          education_level: string
+          file_name: string
+          file_type?: string | null
+          file_url: string
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          education_level?: string
+          file_name?: string
+          file_type?: string | null
+          file_url?: string
+          id?: string
+          title?: string
+          user_id?: string
         }
         Relationships: []
       }
