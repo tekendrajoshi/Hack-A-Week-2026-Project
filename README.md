@@ -29,6 +29,7 @@ Gyansathi is a student-driven platform that connects students, learners, and res
   - Audio and video calls  
   - Shared whiteboard and screen sharing(in Future)
 - **AI Tutor as Support, Not Replacement:** An AI Tutor assists students when human help is unavailable, supporting learning without replacing peer interaction.
+- ** Resources Section ** where students can add files resources related to their academics. The files related to that specific users level are shows.
 
 ---
 ## ✨ Key Features
@@ -66,6 +67,9 @@ Gyansathi is a student-driven platform that connects students, learners, and res
 - Each user has a profile with academic details
 - Profile completion required for full access
 - Tracks contribution points and activity
+### 📚 Resources Section
+- Students can upload academic files and learning materials
+- Resources are organized and shown based on the user’s education level which enables easy sharing of notes, PDFs, and study materials among peers of same level
 
 ---
 ## 🔄 Application Flow
@@ -106,7 +110,8 @@ Gyansathi uses a structured relational database designed for scalability, securi
 - **comments** – Stores answers and discussions related to questions  
 - **likes** – Tracks likes on answers to calculate contribution points  
 - **messages** – Handles private one-to-one conversations between users  
-- **notifications** – Stores system alerts and activity updates  
+- **notifications** – Stores system alerts and activity updates 
+- **Resources** - to store the resources and the level for which that resources is added along with the user_id the person who added
 
 ---
 
