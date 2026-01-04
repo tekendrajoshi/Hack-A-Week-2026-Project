@@ -5,9 +5,9 @@ Gyansathi is a student-driven platform that connects students, learners, and res
 
 ⭐ Use it now: https://gyansathi.lovable.app/
 
-### Hackathon Context  
-This project was developed as part of **LOCUS Hack A Week 2026**.  
-**Team Name:** Tensor
+#### Hackathon Context  
+- This project was developed as part of **LOCUS Hack A Week 2026**.  
+- **Team Name:** Tensor
 ---
 
 ## 🧠 Problem Summary
@@ -69,14 +69,22 @@ This project was developed as part of **LOCUS Hack A Week 2026**.
 
 ---
 ## 🔄 Application Flow
-1. User signs up and completes their academic profile
-2. User accesses level-based questions
-3. User asks or answers questions
-4. Helpful answers receive likes
-5. Likes increase user points
-6. Users appear on the public leaderboard
-7. Users can message or call each other for deeper discussion
-8. AI Tutor provides additional academic assistance when needed
+
+- User signs up and then, users are required to complete their academic profile by selecting their education level and stream, and writing a short self-description which is used to personalize the learning experience.
+
+- Users are then redirected to the main dashboard, which serves as the central hub of the platform. All major features are accessible through a navigation bar.
+
+- **Questions & Answers** section displays questions posted by students of the same academic level. Users can post their own questions, answer others, and like helpful responses. Likes contribute to a point-based reputation system, motivating users to provide quality answers.
+
+- A dedicated **Junior Help** section allows senior students to support juniors by answering their academic questions. Contributions in this section also earn likes and points, promoting peer-to-peer mentoring.
+
+- The platform includes an **AI Tutor** powered by the Gemini API. Users can ask questions or upload images, and the AI generates personalized response.
+
+- A public **Leaderboard** ranks users based on the points they earn from likes.
+
+- Each user has a **Profile & Messaging** feature where they can edit profile details, view previous conversations, and chat privately with other users by clicking on their profile.
+
+- There is also audio and video calling facility for the user through whih learners can discuss in case of necessity.
 ---
 ## 🧩 System Architecture
 
